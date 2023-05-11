@@ -1,0 +1,6 @@
+.env
+fitzPrints/settings.py
+fpenv/
+db.sqlite3
+__pycache__/
+```
