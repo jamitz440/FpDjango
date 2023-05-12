@@ -1,1 +1,127 @@
-<h1> ey up </h1>
+{% extends 'base.html' %}
+
+{% block title %}FitzPrintsGB{% endblock %}
+
+{% block content %}
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+        {% for product in products %}
+            {% with h=product.colour_h %}
+            {% with s=product.colour_s %}
+            {% with l=product.colour_l %}
+        
+        
+            <div id='models' class="w-full">
+                <div class="bg-white rounded shadow hover:scale-[1.02] transform transition duration-200 ease-out ">
+                    <img src="{{ product.image.url }}" alt="{{ product.name }}" class="w-full h-auto object-cover rounded-t model_image">
+                    <div class="p-4">
+                        <h3 class="text-lg font-bold truncate">{{ product.name }}</h3>
+                        <div class="flex justify-between mt-2">
+                            <span class="font-semibold truncate-text"><i class="fa-solid fa-weight-scale"></i> {{ product.weight }}g</span>
+                            <span class="font-semibold truncate-text"><i class="fa-solid fa-clock"></i></i> {{ product.print_time }}hr</span>
+                            <span class="font-semibold truncate-text"><i class="fa-solid fa-tag"></i> £{{ product.price }} </span>
+                        </div>
+                        <div class='flex justify-between'>
+                            {% if product.file %}
+                                <a style=" background-color: hsl({{h}},{{s}}%,{{l}}%);" class=" text-white font-bold py-2 px-4 rounded mt-4 block w-full mr-4 text-center">
+                                    View Details
+                                </a>
+                                <a style=" border-color: hsl({{h}},{{s}}%,{{l}}%);" class="bg-opacity-10 text-white font-bold py-2 px-4 rounded mt-4 w-auto flex items-center justify-center border-2" href="{{product.file.url}}">
+                                    <i class="fa-solid fa-download"style="color: hsl({{h}},{{s}}%,{{l}}%);"></i>
+                                </a>
+                            {% else %}
+                                <a style=" background-color: hsl({{h}},{{s}}%,{{l}}%);" class=" text-white font-bold py-2 px-4 rounded mt-4 block w-full text-center">
+                                    View Details
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endwith %}
+            {% endwith %}
+            {% endwith %}
+        
+        {% endfor %}
+        <div class="bg-white rounded shadow hover:scale-[1.02] transform transition duration-200 ease-out">
+            <div id='upload_image' class ="text-slate-50 w-full object-cover rounded-t bg-slate-400 h-[158px] flex items-center justify-center">
+                <span class='text-slate-50' ><i class="fa-solid fa-images fa-4x"></i></span>
+            </div>
+            <div class="p-4">
+                <h3 class="text-lg font-bold truncate">Add A New Model</h3>
+                <div class="flex justify-between mt-2">
+                    <span class="font-semibold truncate-text"><i class="fa-solid fa-weight-scale"></i> ?</span>
+                    <span class="font-semibold truncate-text"><i class="fa-solid fa-clock"></i> ?</span>
+                    <span class="font-semibold truncate-text"><i class="fa-solid fa-tag"></i> ?</span>
+                </div>
+                <div class='flex justify-between'>                    
+                    <a class="bg-slate-400 text-white font-bold py-2 px-4 rounded mt-4 block w-full text-center" href='/upload'>
+                        Add Model
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="w-full">
+            <div id ='upload_box' class="bg-white rounded shadow flex items-center justify-center h-full hover:scale-[1.02] transform transition duration-200 ease-out">
+                <a id='upload_button' class="flex items-center justify-center bg-slate-400 text-white rounded-full w-1/2 h-1/2" href='/upload'>
+                    <i class="fa-solid fa-images fa-2xl"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+    $(document).ready(function(){
+        function adjust_height(){
+            var height = $('#models').height(); // Get the height of the models
+            $('#upload_box').height(height); // Sets the height of the upload box to the height of the models
+            var width = $('#upload_button').width(); // Get the width of the upload button to make it round
+            $('#upload_button').height(width);
+            var image_height = $('.model_image').height();
+            $('#upload_image').height(image_height);
+        }
+        function adjust_text(){
+            var elements = document.getElementsByClassName('truncate-text')
+            var box = document.getElementById('models');
+    
+            for (var i = 0; i < elements.length; i++) {
+                if (box.offsetWidth < 250){
+                    elements[i].classList.add('text-xs');
+                    elements[i].classList.remove('text-sm');
+                    elements[i].classList.remove('text-base');
+                    elements[i].classList.remove('text-lg');
+                }else if (box.offsetWidth > 250 && box.offsetWidth < 330){
+                    elements[i].classList.add('text-sm');
+                    elements[i].classList.remove('text-xs');
+                    elements[i].classList.remove('text-base');
+                    elements[i].classList.remove('text-lg');
+                }else if (box.offsetWidth > 330 && box.offsetWidth < 450){
+                    elements[i].classList.add('text-base');
+                    elements[i].classList.remove('text-sm');
+                    elements[i].classList.remove('text-xs');
+                    elements[i].classList.remove('text-lg');
+                }else{
+                    elements[i].classList.add('text-lg');
+                    elements[i].classList.remove('text-xs');
+                    elements[i].classList.remove('text-base');
+                    elements[i].classList.remove('text-sm');
+                }
+            }
+        }
+        function onWindowLoad() {
+            adjust_height();
+            adjust_text();
+        }
+    
+        // Call adjust_height() and adjust_text() when the page is fully loaded
+        $(window).on('load', onWindowLoad);
+
+    
+        adjust_height(); // To initially set the height.
+        adjust_text();
+        $(window).resize(adjust_text); // To resize the text whenever the window is resized.
+        $(window).resize(adjust_height); // To resize the height whenever the window is resized.
+    });
+    
+    </script>
+{% endblock %}

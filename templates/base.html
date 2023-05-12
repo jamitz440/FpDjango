@@ -1,0 +1,37 @@
+{% load static tailwind_tags %}
+{% load static %}
+{% load widget_tweaks %}
+{% tailwind_css %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://kit.fontawesome.com/784f777912.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,500,0,0" />
+  <link rel="icon" href="{% static 'favicon.ico' %}">
+  <title>{% block title %}Your Website{% endblock %}</title>
+</head>
+<body class="bg-gray-100 font-sans">
+  <header class="flex justify-between items-center h-20 p-4">
+    
+    <div class="flex-grow flex justify-center">
+      <a href="{% url 'home' %}">
+        <img src="{% static 'app/logo.png' %}" alt="Your Logo" class="h-12">
+      </a>
+    </div>
+    
+  </header>
+  
+    
+  <main class="p-5">
+    {% block content %}
+    <!-- Your main content goes here -->
+    {% endblock %}
+  </main>
+  <footer class="flex justify-center items-center bg-gray-800 h-10 text-white text-sm">
+    &copy; 2023 FitzPrintsGB. All rights reserved.
+  </footer>
+</body>
+</html>
